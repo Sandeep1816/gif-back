@@ -1,0 +1,66 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type ProductGQL {
+  id: String!
+  title: String!
+  slug: String!
+  description: String
+  imageUrl: String
+  priceCents: Int!
+  stock: Int!
+  categoryId: String
+}
+
+type CategoryGQL {
+  id: String!
+  name: String!
+  slug: String!
+}
+
+type Query {
+  products: [ProductGQL!]!
+  product(id: String!): ProductGQL
+  categories: [CategoryGQL!]!
+  category(id: String!): CategoryGQL
+}
+
+type Mutation {
+  createProduct(data: CreateProductInput!): ProductGQL!
+  updateProduct(id: String!, data: UpdateProductInput!): ProductGQL!
+  deleteProduct(id: String!): ProductGQL!
+  createCategory(data: CreateCategoryInput!): CategoryGQL!
+  updateCategory(id: String!, data: UpdateCategoryInput!): CategoryGQL!
+  deleteCategory(id: String!): CategoryGQL!
+}
+
+input CreateProductInput {
+  title: String!
+  slug: String
+  priceCents: Int!
+  stock: Int
+  description: String
+  imageUrl: String
+  categoryId: String
+}
+
+input UpdateProductInput {
+  title: String
+  slug: String
+  priceCents: Int
+  stock: Int
+  description: String
+  imageUrl: String
+  categoryId: String
+}
+
+input CreateCategoryInput {
+  name: String!
+  slug: String
+}
+
+input UpdateCategoryInput {
+  name: String
+  slug: String
+}
