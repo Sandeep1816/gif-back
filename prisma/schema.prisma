@@ -4,9 +4,10 @@ generator client {
 
 datasource db {
   provider   = "postgresql"
-  url        = env("DATABASE_URL")
-  directUrl  = env("DIRECT_URL")
+  url        = env("DATABASE_URL")   // for Prisma Client (runtime)
+  directUrl  = env("DIRECT_URL")     // for migrations
 }
+
 
 model Category {
   id        String    @id @default(uuid())
