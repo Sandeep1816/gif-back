@@ -5,7 +5,7 @@ generator client {
 datasource db {
   provider   = "postgresql"
   url        = env("DATABASE_URL")   // for Prisma Client (runtime)
-  directUrl  = env("DIRECT_URL")     // for migrations
+  directUrl  = env("DIRECT_URL")     // for migrations .....
 }
 
 
