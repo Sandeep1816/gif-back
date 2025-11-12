@@ -11,10 +11,16 @@ import { CategoriesModule } from './modules/categories/categories.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+
+      // ✅ Enable Playground and schema visibility in production
       playground: true,
+      introspection: true,
+
+      // optional but good practice
       path: '/graphql',
       context: ({ req, res }) => ({ req, res }),
     }),
+
     PrismaModule,
     ProductsModule,
     CategoriesModule,
