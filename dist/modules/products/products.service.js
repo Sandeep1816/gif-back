@@ -47,11 +47,7 @@ let ProductsService = class ProductsService {
             data: {
                 ...rest,
                 slug,
-                ...(categoryId && {
-                    category: {
-                        connect: { id: categoryId },
-                    },
-                }),
+                ...(categoryId && { category: { connect: { id: categoryId } } }),
             },
         });
     }

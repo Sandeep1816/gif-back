@@ -22,8 +22,9 @@ let ProductGQL = class ProductGQL {
     slug;
     description;
     imageUrl;
-    priceCents;
+    priceInr;
     stock;
+    isFavourite;
     categoryId;
 };
 exports.ProductGQL = ProductGQL;
@@ -50,11 +51,15 @@ __decorate([
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int),
     __metadata("design:type", Number)
-], ProductGQL.prototype, "priceCents", void 0);
+], ProductGQL.prototype, "priceInr", void 0);
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int),
     __metadata("design:type", Number)
 ], ProductGQL.prototype, "stock", void 0);
+__decorate([
+    (0, graphql_2.Field)(),
+    __metadata("design:type", Boolean)
+], ProductGQL.prototype, "isFavourite", void 0);
 __decorate([
     (0, graphql_2.Field)({ nullable: true }),
     __metadata("design:type", String)
@@ -65,11 +70,12 @@ exports.ProductGQL = ProductGQL = __decorate([
 let CreateProductInput = class CreateProductInput {
     title;
     slug;
-    priceCents;
+    priceInr;
     stock;
     description;
     imageUrl;
     categoryId;
+    isFavourite;
 };
 exports.CreateProductInput = CreateProductInput;
 __decorate([
@@ -83,7 +89,7 @@ __decorate([
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int),
     __metadata("design:type", Number)
-], CreateProductInput.prototype, "priceCents", void 0);
+], CreateProductInput.prototype, "priceInr", void 0);
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int, { nullable: true }),
     __metadata("design:type", Number)
@@ -100,17 +106,22 @@ __decorate([
     (0, graphql_2.Field)({ nullable: true }),
     __metadata("design:type", String)
 ], CreateProductInput.prototype, "categoryId", void 0);
+__decorate([
+    (0, graphql_2.Field)({ nullable: true }),
+    __metadata("design:type", Boolean)
+], CreateProductInput.prototype, "isFavourite", void 0);
 exports.CreateProductInput = CreateProductInput = __decorate([
     (0, graphql_2.InputType)()
 ], CreateProductInput);
 let UpdateProductInput = class UpdateProductInput {
     title;
     slug;
-    priceCents;
+    priceInr;
     stock;
     description;
     imageUrl;
     categoryId;
+    isFavourite;
 };
 exports.UpdateProductInput = UpdateProductInput;
 __decorate([
@@ -124,7 +135,7 @@ __decorate([
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int, { nullable: true }),
     __metadata("design:type", Number)
-], UpdateProductInput.prototype, "priceCents", void 0);
+], UpdateProductInput.prototype, "priceInr", void 0);
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int, { nullable: true }),
     __metadata("design:type", Number)
@@ -141,6 +152,10 @@ __decorate([
     (0, graphql_2.Field)({ nullable: true }),
     __metadata("design:type", String)
 ], UpdateProductInput.prototype, "categoryId", void 0);
+__decorate([
+    (0, graphql_2.Field)({ nullable: true }),
+    __metadata("design:type", Boolean)
+], UpdateProductInput.prototype, "isFavourite", void 0);
 exports.UpdateProductInput = UpdateProductInput = __decorate([
     (0, graphql_2.InputType)()
 ], UpdateProductInput);
@@ -159,6 +174,7 @@ let ProductsResolver = class ProductsResolver {
         const createData = {
             ...data,
             stock: data.stock ?? 0,
+            isFavourite: data.isFavourite ?? false,
         };
         if (data.categoryId) {
             createData.category = { connect: { id: data.categoryId } };
