@@ -8,8 +8,9 @@ type ProductGQL {
   slug: String!
   description: String
   imageUrl: String
-  priceCents: Int!
+  priceInr: Int!
   stock: Int!
+  isFavourite: Boolean!
   categoryId: String
 }
 
@@ -38,21 +39,23 @@ type Mutation {
 input CreateProductInput {
   title: String!
   slug: String
-  priceCents: Int!
+  priceInr: Int!
   stock: Int
   description: String
   imageUrl: String
   categoryId: String
+  isFavourite: Boolean
 }
 
 input UpdateProductInput {
   title: String
   slug: String
-  priceCents: Int
+  priceInr: Int
   stock: Int
   description: String
   imageUrl: String
   categoryId: String
+  isFavourite: Boolean
 }
 
 input CreateCategoryInput {
