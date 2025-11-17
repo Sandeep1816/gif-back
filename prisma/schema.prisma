@@ -4,10 +4,9 @@ generator client {
 
 datasource db {
   provider   = "postgresql"
-  url        = env("DATABASE_URL")   // for Prisma Client (runtime)
-  directUrl  = env("DIRECT_URL")     // for migrations .....
+  url        = env("DATABASE_URL")
+  directUrl  = env("DIRECT_URL")
 }
-
 
 model Category {
   id        String    @id @default(uuid())
@@ -23,13 +22,15 @@ model Product {
   slug        String     @unique
   description String?
   imageUrl    String?
-  priceCents  Int
+  priceInr    Int        @default(0)   // <── FIXED
   stock       Int        @default(0)
+  isFavourite Boolean    @default(false)
   categoryId  String?
   category    Category?  @relation(fields: [categoryId], references: [id])
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }
+
 
 model Order {
   id          String   @id @default(uuid())

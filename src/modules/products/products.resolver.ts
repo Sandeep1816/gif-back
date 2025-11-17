@@ -9,55 +9,88 @@ export class ProductGQL {
   @Field() slug: string;
   @Field({ nullable: true }) description?: string;
   @Field({ nullable: true }) imageUrl?: string;
-  @Field(() => Int) priceCents: number;
-  @Field(() => Int) stock: number;
-  @Field({ nullable: true }) categoryId?: string;
+
+  @Field(() => Int)
+  priceInr: number; // UPDATED
+
+  @Field(() => Int)
+  stock: number;
+
+  @Field()
+  isFavourite: boolean; // NEW
+
+  @Field({ nullable: true })
+  categoryId?: string;
 }
 
 @InputType()
 export class CreateProductInput {
   @Field() title: string;
-  @Field({ nullable: true }) slug?: string; // ✅ optional
-  @Field(() => Int) priceCents: number;
-  @Field(() => Int, { nullable: true }) stock?: number;
-  @Field({ nullable: true }) description?: string;
-  @Field({ nullable: true }) imageUrl?: string;
-  @Field({ nullable: true }) categoryId?: string;
+  @Field({ nullable: true }) slug?: string;
+
+  @Field(() => Int)
+  priceInr: number; // UPDATED
+
+  @Field(() => Int, { nullable: true })
+  stock?: number;
+
+  @Field({ nullable: true })
+  description?: string;
+
+  @Field({ nullable: true })
+  imageUrl?: string;
+
+  @Field({ nullable: true })
+  categoryId?: string;
+
+  @Field({ nullable: true })
+  isFavourite?: boolean; // NEW
 }
 
 @InputType()
 export class UpdateProductInput {
   @Field({ nullable: true }) title?: string;
   @Field({ nullable: true }) slug?: string;
-  @Field(() => Int, { nullable: true }) priceCents?: number;
-  @Field(() => Int, { nullable: true }) stock?: number;
-  @Field({ nullable: true }) description?: string;
-  @Field({ nullable: true }) imageUrl?: string;
-  @Field({ nullable: true }) categoryId?: string;
+
+  @Field(() => Int, { nullable: true })
+  priceInr?: number; // UPDATED
+
+  @Field(() => Int, { nullable: true })
+  stock?: number;
+
+  @Field({ nullable: true })
+  description?: string;
+
+  @Field({ nullable: true })
+  imageUrl?: string;
+
+  @Field({ nullable: true })
+  categoryId?: string;
+
+  @Field({ nullable: true })
+  isFavourite?: boolean; // NEW
 }
 
 @Resolver(() => ProductGQL)
 export class ProductsResolver {
   constructor(private readonly productsService: ProductsService) {}
 
-  // 🧩 Get all products
   @Query(() => [ProductGQL])
   products() {
     return this.productsService.findAll();
   }
 
-  // 🧩 Get single product by ID
   @Query(() => ProductGQL, { nullable: true })
   product(@Args('id') id: string) {
     return this.productsService.findOne(id);
   }
 
-  // 🧩 Create product
   @Mutation(() => ProductGQL)
   createProduct(@Args('data') data: CreateProductInput) {
     const createData: any = {
       ...data,
       stock: data.stock ?? 0,
+      isFavourite: data.isFavourite ?? false,
     };
 
     if (data.categoryId) {
@@ -67,7 +100,6 @@ export class ProductsResolver {
     return this.productsService.create(createData);
   }
 
-  // 🧩 Update product
   @Mutation(() => ProductGQL)
   updateProduct(@Args('id') id: string, @Args('data') data: UpdateProductInput) {
     const updateData: any = { ...data };
@@ -79,7 +111,6 @@ export class ProductsResolver {
     return this.productsService.update(id, updateData);
   }
 
-  // 🧩 Delete product
   @Mutation(() => ProductGQL)
   deleteProduct(@Args('id') id: string) {
     return this.productsService.delete(id);

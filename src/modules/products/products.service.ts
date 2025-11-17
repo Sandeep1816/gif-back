@@ -6,13 +6,13 @@ import { Prisma } from '@prisma/client';
 export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
-  // 🧩 Helper: automatically generate a slug from the product title
+  // Auto-generate slug
   private generateSlug(title: string): string {
     return title
       .toLowerCase()
       .replace(/&/g, 'and')
-      .replace(/[^a-z0-9]+/g, '-')   // replace spaces & special chars with '-'
-      .replace(/^-+|-+$/g, '');      // trim hyphens
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
   }
 
   findAll() {
@@ -28,34 +28,28 @@ export class ProductsService {
     });
   }
 
-  // ✅ Create product (auto-slug + safe category connect)
+  // Create Product
   async create(data: any) {
     const baseSlug = data.slug || this.generateSlug(data.title);
     let slug = baseSlug;
     let count = 1;
 
-    // Prevent duplicate slugs
     while (await this.prisma.product.findUnique({ where: { slug } })) {
       slug = `${baseSlug}-${count++}`;
     }
 
-    // ✅ Remove categoryId (Prisma doesn't accept it directly)
     const { categoryId, ...rest } = data;
 
     return this.prisma.product.create({
       data: {
         ...rest,
         slug,
-        // ✅ Proper relation connect
-        ...(categoryId && {
-          category: {
-            connect: { id: categoryId },
-          },
-        }),
+        ...(categoryId && { category: { connect: { id: categoryId } } }),
       },
     });
   }
 
+  // Update Product
   update(id: string, data: Prisma.ProductUpdateInput) {
     return this.prisma.product.update({
       where: { id },
@@ -63,6 +57,7 @@ export class ProductsService {
     });
   }
 
+  // Delete Product
   delete(id: string) {
     return this.prisma.product.delete({
       where: { id },
