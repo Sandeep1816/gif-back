@@ -2,6 +2,10 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ObjectType, Field, Int, InputType } from '@nestjs/graphql';
 import { ProductsService } from './products.service';
 
+/* ===============================
+        GQL OBJECT TYPE
+================================ */
+
 @ObjectType()
 export class ProductGQL {
   @Field() id: string;
@@ -11,17 +15,21 @@ export class ProductGQL {
   @Field({ nullable: true }) imageUrl?: string;
 
   @Field(() => Int)
-  priceInr: number; // UPDATED
+  price: number;
 
   @Field(() => Int)
   stock: number;
 
   @Field()
-  isFavourite: boolean; // NEW
+  isFavourite: boolean;
 
   @Field({ nullable: true })
   categoryId?: string;
 }
+
+/* ===============================
+        CREATE INPUT
+================================ */
 
 @InputType()
 export class CreateProductInput {
@@ -29,7 +37,7 @@ export class CreateProductInput {
   @Field({ nullable: true }) slug?: string;
 
   @Field(() => Int)
-  priceInr: number; // UPDATED
+  price: number;
 
   @Field(() => Int, { nullable: true })
   stock?: number;
@@ -44,8 +52,12 @@ export class CreateProductInput {
   categoryId?: string;
 
   @Field({ nullable: true })
-  isFavourite?: boolean; // NEW
+  isFavourite?: boolean;
 }
+
+/* ===============================
+        UPDATE INPUT
+================================ */
 
 @InputType()
 export class UpdateProductInput {
@@ -53,7 +65,7 @@ export class UpdateProductInput {
   @Field({ nullable: true }) slug?: string;
 
   @Field(() => Int, { nullable: true })
-  priceInr?: number; // UPDATED
+  price?: number;
 
   @Field(() => Int, { nullable: true })
   stock?: number;
@@ -68,8 +80,12 @@ export class UpdateProductInput {
   categoryId?: string;
 
   @Field({ nullable: true })
-  isFavourite?: boolean; // NEW
+  isFavourite?: boolean;
 }
+
+/* ===============================
+        RESOLVER
+================================ */
 
 @Resolver(() => ProductGQL)
 export class ProductsResolver {
@@ -87,28 +103,16 @@ export class ProductsResolver {
 
   @Mutation(() => ProductGQL)
   createProduct(@Args('data') data: CreateProductInput) {
-    const createData: any = {
+    return this.productsService.create({
       ...data,
       stock: data.stock ?? 0,
       isFavourite: data.isFavourite ?? false,
-    };
-
-    if (data.categoryId) {
-      createData.category = { connect: { id: data.categoryId } };
-    }
-
-    return this.productsService.create(createData);
+    });
   }
 
   @Mutation(() => ProductGQL)
   updateProduct(@Args('id') id: string, @Args('data') data: UpdateProductInput) {
-    const updateData: any = { ...data };
-
-    if (data.categoryId) {
-      updateData.category = { connect: { id: data.categoryId } };
-    }
-
-    return this.productsService.update(id, updateData);
+    return this.productsService.update(id, data);
   }
 
   @Mutation(() => ProductGQL)

@@ -6,7 +6,6 @@ import { Prisma } from '@prisma/client';
 export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
-  // Auto-generate slug
   private generateSlug(title: string): string {
     return title
       .toLowerCase()
@@ -18,6 +17,7 @@ export class ProductsService {
   findAll() {
     return this.prisma.product.findMany({
       include: { category: true },
+      orderBy: { createdAt: 'desc' },
     });
   }
 
@@ -28,7 +28,6 @@ export class ProductsService {
     });
   }
 
-  // Create Product
   async create(data: any) {
     const baseSlug = data.slug || this.generateSlug(data.title);
     let slug = baseSlug;
@@ -38,18 +37,22 @@ export class ProductsService {
       slug = `${baseSlug}-${count++}`;
     }
 
-    const { categoryId, ...rest } = data;
-
     return this.prisma.product.create({
       data: {
-        ...rest,
+        title: data.title,
+        description: data.description,
+        imageUrl: data.imageUrl,
+        price: data.price,
+        stock: data.stock ?? 0,
+        isFavourite: data.isFavourite ?? false,
         slug,
-        ...(categoryId && { category: { connect: { id: categoryId } } }),
+        ...(data.categoryId && {
+          category: { connect: { id: data.categoryId } },
+        }),
       },
     });
   }
 
-  // Update Product
   update(id: string, data: Prisma.ProductUpdateInput) {
     return this.prisma.product.update({
       where: { id },
@@ -57,7 +60,6 @@ export class ProductsService {
     });
   }
 
-  // Delete Product
   delete(id: string) {
     return this.prisma.product.delete({
       where: { id },
