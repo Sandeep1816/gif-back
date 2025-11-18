@@ -1,19 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import cors from 'cors';
-import { graphqlUploadExpress } from 'graphql-upload-minimal';
 
-// Use require to avoid default-import interop runtime issues
-const express = require('express') as typeof import('express');
+// Use require() for CJS modules (Express, CORS)
+const express = require('express');
+const cors = require('cors');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Body parser
+  // JSON parser
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-  // CORS
+  // FIX: CORS works in Render now
   app.use(
     cors({
       origin: [
@@ -22,17 +21,13 @@ async function bootstrap() {
         "https://gif-app.vercel.app"
       ],
       credentials: true,
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     })
   );
 
-  // File upload middleware (Apollo v5 compatible)
-  app.use(graphqlUploadExpress({ maxFileSize: 10_000_000, maxFiles: 5 }));
-
   const port = process.env.PORT || 3000;
   await app.listen(port);
-
-  console.log(`🚀 Server running at http://localhost:${port}`);
+  console.log(`🚀 Server running on port ${port}`);
 }
 
 bootstrap();
