@@ -22,7 +22,7 @@ model Product {
   slug        String    @unique
   description String?
   imageUrl    String?
-  price       Int        // <--- REQUIRED FIELD
+  price       Int
   stock       Int       @default(0)
   isFavourite Boolean   @default(false)
   categoryId  String?

@@ -42,7 +42,7 @@ export class ProductsService {
         title: data.title,
         description: data.description,
         imageUrl: data.imageUrl,
-        price: data.price,
+        price: data.price,         // ✔ EXISTS IN SCHEMA NOW
         stock: data.stock ?? 0,
         isFavourite: data.isFavourite ?? false,
         slug,
