@@ -13,7 +13,6 @@ exports.CategoriesService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma/prisma.service");
 let CategoriesService = class CategoriesService {
-    prisma;
     constructor(prisma) {
         this.prisma = prisma;
     }
@@ -38,7 +37,7 @@ let CategoriesService = class CategoriesService {
             slug = `${baseSlug}-${count++}`;
         }
         return this.prisma.category.create({
-            data: { ...data, slug },
+            data: Object.assign(Object.assign({}, data), { slug }),
         });
     }
     update(id, data) {

@@ -1,13 +1,10 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const core_1 = require("@nestjs/core");
 const app_module_1 = require("./app.module");
-const graphql_upload_1 = require("graphql-upload");
-const express_1 = __importDefault(require("express"));
-const cors_1 = __importDefault(require("cors"));
+const express_1 = require("express");
+const cors_1 = require("cors");
+const graphql_upload_minimal_1 = require("graphql-upload-minimal");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.use(express_1.default.json({ limit: '10mb' }));
@@ -21,7 +18,7 @@ async function bootstrap() {
         credentials: true,
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE"
     }));
-    app.use((0, graphql_upload_1.graphqlUploadExpress)({ maxFileSize: 10_000_000, maxFiles: 5 }));
+    app.use((0, graphql_upload_minimal_1.graphqlUploadExpress)({ maxFileSize: 10000000, maxFiles: 5 }));
     const port = process.env.PORT || 3000;
     await app.listen(port);
     console.log(`🚀 Server running at http://localhost:${port}`);

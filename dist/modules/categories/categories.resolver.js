@@ -17,9 +17,6 @@ const graphql_1 = require("@nestjs/graphql");
 const graphql_2 = require("@nestjs/graphql");
 const categories_service_1 = require("./categories.service");
 let CategoryGQL = class CategoryGQL {
-    id;
-    name;
-    slug;
 };
 exports.CategoryGQL = CategoryGQL;
 __decorate([
@@ -38,8 +35,6 @@ exports.CategoryGQL = CategoryGQL = __decorate([
     (0, graphql_2.ObjectType)()
 ], CategoryGQL);
 let CreateCategoryInput = class CreateCategoryInput {
-    name;
-    slug;
 };
 exports.CreateCategoryInput = CreateCategoryInput;
 __decorate([
@@ -54,8 +49,6 @@ exports.CreateCategoryInput = CreateCategoryInput = __decorate([
     (0, graphql_2.InputType)()
 ], CreateCategoryInput);
 let UpdateCategoryInput = class UpdateCategoryInput {
-    name;
-    slug;
 };
 exports.UpdateCategoryInput = UpdateCategoryInput;
 __decorate([
@@ -70,7 +63,6 @@ exports.UpdateCategoryInput = UpdateCategoryInput = __decorate([
     (0, graphql_2.InputType)()
 ], UpdateCategoryInput);
 let CategoriesResolver = class CategoriesResolver {
-    categoriesService;
     constructor(categoriesService) {
         this.categoriesService = categoriesService;
     }

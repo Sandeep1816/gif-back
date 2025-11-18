@@ -13,7 +13,6 @@ exports.ProductsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma/prisma.service");
 let ProductsService = class ProductsService {
-    prisma;
     constructor(prisma) {
         this.prisma = prisma;
     }
@@ -27,6 +26,7 @@ let ProductsService = class ProductsService {
     findAll() {
         return this.prisma.product.findMany({
             include: { category: true },
+            orderBy: { createdAt: 'desc' },
         });
     }
     findOne(id) {
@@ -36,19 +36,17 @@ let ProductsService = class ProductsService {
         });
     }
     async create(data) {
+        var _a, _b;
         const baseSlug = data.slug || this.generateSlug(data.title);
         let slug = baseSlug;
         let count = 1;
         while (await this.prisma.product.findUnique({ where: { slug } })) {
             slug = `${baseSlug}-${count++}`;
         }
-        const { categoryId, ...rest } = data;
         return this.prisma.product.create({
-            data: {
-                ...rest,
-                slug,
-                ...(categoryId && { category: { connect: { id: categoryId } } }),
-            },
+            data: Object.assign({ title: data.title, description: data.description, imageUrl: data.imageUrl, price: data.price, stock: (_a = data.stock) !== null && _a !== void 0 ? _a : 0, isFavourite: (_b = data.isFavourite) !== null && _b !== void 0 ? _b : false, slug }, (data.categoryId && {
+                category: { connect: { id: data.categoryId } },
+            })),
         });
     }
     update(id, data) {

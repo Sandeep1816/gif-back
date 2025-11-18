@@ -17,15 +17,6 @@ const graphql_1 = require("@nestjs/graphql");
 const graphql_2 = require("@nestjs/graphql");
 const products_service_1 = require("./products.service");
 let ProductGQL = class ProductGQL {
-    id;
-    title;
-    slug;
-    description;
-    imageUrl;
-    priceInr;
-    stock;
-    isFavourite;
-    categoryId;
 };
 exports.ProductGQL = ProductGQL;
 __decorate([
@@ -51,7 +42,7 @@ __decorate([
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int),
     __metadata("design:type", Number)
-], ProductGQL.prototype, "priceInr", void 0);
+], ProductGQL.prototype, "price", void 0);
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int),
     __metadata("design:type", Number)
@@ -68,14 +59,6 @@ exports.ProductGQL = ProductGQL = __decorate([
     (0, graphql_2.ObjectType)()
 ], ProductGQL);
 let CreateProductInput = class CreateProductInput {
-    title;
-    slug;
-    priceInr;
-    stock;
-    description;
-    imageUrl;
-    categoryId;
-    isFavourite;
 };
 exports.CreateProductInput = CreateProductInput;
 __decorate([
@@ -89,7 +72,7 @@ __decorate([
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int),
     __metadata("design:type", Number)
-], CreateProductInput.prototype, "priceInr", void 0);
+], CreateProductInput.prototype, "price", void 0);
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int, { nullable: true }),
     __metadata("design:type", Number)
@@ -114,14 +97,6 @@ exports.CreateProductInput = CreateProductInput = __decorate([
     (0, graphql_2.InputType)()
 ], CreateProductInput);
 let UpdateProductInput = class UpdateProductInput {
-    title;
-    slug;
-    priceInr;
-    stock;
-    description;
-    imageUrl;
-    categoryId;
-    isFavourite;
 };
 exports.UpdateProductInput = UpdateProductInput;
 __decorate([
@@ -135,7 +110,7 @@ __decorate([
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int, { nullable: true }),
     __metadata("design:type", Number)
-], UpdateProductInput.prototype, "priceInr", void 0);
+], UpdateProductInput.prototype, "price", void 0);
 __decorate([
     (0, graphql_2.Field)(() => graphql_2.Int, { nullable: true }),
     __metadata("design:type", Number)
@@ -160,7 +135,6 @@ exports.UpdateProductInput = UpdateProductInput = __decorate([
     (0, graphql_2.InputType)()
 ], UpdateProductInput);
 let ProductsResolver = class ProductsResolver {
-    productsService;
     constructor(productsService) {
         this.productsService = productsService;
     }
@@ -171,22 +145,11 @@ let ProductsResolver = class ProductsResolver {
         return this.productsService.findOne(id);
     }
     createProduct(data) {
-        const createData = {
-            ...data,
-            stock: data.stock ?? 0,
-            isFavourite: data.isFavourite ?? false,
-        };
-        if (data.categoryId) {
-            createData.category = { connect: { id: data.categoryId } };
-        }
-        return this.productsService.create(createData);
+        var _a, _b;
+        return this.productsService.create(Object.assign(Object.assign({}, data), { stock: (_a = data.stock) !== null && _a !== void 0 ? _a : 0, isFavourite: (_b = data.isFavourite) !== null && _b !== void 0 ? _b : false }));
     }
     updateProduct(id, data) {
-        const updateData = { ...data };
-        if (data.categoryId) {
-            updateData.category = { connect: { id: data.categoryId } };
-        }
-        return this.productsService.update(id, updateData);
+        return this.productsService.update(id, data);
     }
     deleteProduct(id) {
         return this.productsService.delete(id);

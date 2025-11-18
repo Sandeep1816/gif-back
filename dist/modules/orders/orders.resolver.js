@@ -16,10 +16,6 @@ exports.OrdersResolver = exports.CreateOrderInput = exports.CreateOrderItemInput
 const graphql_1 = require("@nestjs/graphql");
 const graphql_2 = require("@nestjs/graphql");
 let OrderGQL = class OrderGQL {
-    id;
-    status;
-    totalCents;
-    createdAt;
 };
 exports.OrderGQL = OrderGQL;
 __decorate([
@@ -42,8 +38,6 @@ exports.OrderGQL = OrderGQL = __decorate([
     (0, graphql_2.ObjectType)()
 ], OrderGQL);
 let CreateOrderItemInput = class CreateOrderItemInput {
-    productId;
-    qty;
 };
 exports.CreateOrderItemInput = CreateOrderItemInput;
 __decorate([
@@ -58,8 +52,6 @@ exports.CreateOrderItemInput = CreateOrderItemInput = __decorate([
     (0, graphql_2.InputType)()
 ], CreateOrderItemInput);
 let CreateOrderInput = class CreateOrderInput {
-    totalCents;
-    items;
 };
 exports.CreateOrderInput = CreateOrderInput;
 __decorate([
@@ -74,7 +66,6 @@ exports.CreateOrderInput = CreateOrderInput = __decorate([
     (0, graphql_2.InputType)()
 ], CreateOrderInput);
 let OrdersResolver = class OrdersResolver {
-    ordersService;
     constructor(ordersService) {
         this.ordersService = ordersService;
     }
