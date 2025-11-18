@@ -22,9 +22,9 @@ model Product {
   slug        String    @unique
   description String?
   imageUrl    String?
-  price       Int
-  isFavourite Boolean   @default(false)
+  price       Int        // <--- REQUIRED FIELD
   stock       Int       @default(0)
+  isFavourite Boolean   @default(false)
   categoryId  String?
   category    Category? @relation(fields: [categoryId], references: [id])
   createdAt   DateTime  @default(now())
