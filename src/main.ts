@@ -1,8 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import express from 'express';
 import cors from 'cors';
-import { graphqlUploadExpress } from "graphql-upload-minimal";
+import { graphqlUploadExpress } from 'graphql-upload-minimal';
+
+// Use require to avoid default-import interop runtime issues
+const express = require('express') as typeof import('express');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
