@@ -12,6 +12,7 @@ type ProductGQL {
   stock: Int!
   isFavourite: Boolean!
   categoryId: String
+  subCategoryId: String
 }
 
 type CategoryGQL {
@@ -20,11 +21,22 @@ type CategoryGQL {
   slug: String!
 }
 
+type SubCategoryGQL {
+  id: String!
+  name: String!
+  slug: String!
+  categoryId: String!
+  category: CategoryGQL
+}
+
 type Query {
   products: [ProductGQL!]!
   product(id: String!): ProductGQL
+  productBySlug(slug: String!): ProductGQL
   categories: [CategoryGQL!]!
   category(id: String!): CategoryGQL
+  subcategories: [SubCategoryGQL!]!
+  subcategory(id: String!): SubCategoryGQL
 }
 
 type Mutation {
@@ -34,6 +46,9 @@ type Mutation {
   createCategory(data: CreateCategoryInput!): CategoryGQL!
   updateCategory(id: String!, data: UpdateCategoryInput!): CategoryGQL!
   deleteCategory(id: String!): CategoryGQL!
+  createSubCategory(data: CreateSubCategoryInput!): SubCategoryGQL!
+  updateSubCategory(id: String!, data: UpdateSubCategoryInput!): SubCategoryGQL!
+  deleteSubCategory(id: String!): SubCategoryGQL!
 }
 
 input CreateProductInput {
@@ -44,6 +59,7 @@ input CreateProductInput {
   description: String
   imageUrl: String
   categoryId: String
+  subCategoryId: String
   isFavourite: Boolean
 }
 
@@ -55,6 +71,7 @@ input UpdateProductInput {
   description: String
   imageUrl: String
   categoryId: String
+  subCategoryId: String
   isFavourite: Boolean
 }
 
@@ -66,4 +83,16 @@ input CreateCategoryInput {
 input UpdateCategoryInput {
   name: String
   slug: String
+}
+
+input CreateSubCategoryInput {
+  name: String!
+  slug: String
+  categoryId: String!
+}
+
+input UpdateSubCategoryInput {
+  name: String
+  slug: String
+  categoryId: String
 }
