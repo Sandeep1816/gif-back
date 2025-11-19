@@ -1,6 +1,7 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ObjectType, Field, InputType } from '@nestjs/graphql';
 import { SubCategoriesService } from './subcategories.service';
+import { CategoryGQL } from '../categories/categories.resolver'; // ⭐ ADD THIS IMPORT
 
 @ObjectType()
 export class SubCategoryGQL {
@@ -8,6 +9,10 @@ export class SubCategoryGQL {
   @Field() name: string;
   @Field() slug: string;
   @Field() categoryId: string;
+
+  // ⭐ Add full category object for GraphQL
+  @Field(() => CategoryGQL, { nullable: true })
+  category?: CategoryGQL;
 }
 
 @InputType()
@@ -21,6 +26,7 @@ export class CreateSubCategoryInput {
 export class UpdateSubCategoryInput {
   @Field({ nullable: true }) name?: string;
   @Field({ nullable: true }) slug?: string;
+  @Field({ nullable: true }) categoryId?: string;
 }
 
 @Resolver(() => SubCategoryGQL)
@@ -43,7 +49,10 @@ export class SubCategoriesResolver {
   }
 
   @Mutation(() => SubCategoryGQL)
-  updateSubCategory(@Args('id') id: string, @Args('data') data: UpdateSubCategoryInput) {
+  updateSubCategory(
+    @Args('id') id: string,
+    @Args('data') data: UpdateSubCategoryInput
+  ) {
     return this.subCategoriesService.update(id, data);
   }
 

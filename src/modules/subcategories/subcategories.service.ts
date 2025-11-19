@@ -14,7 +14,6 @@ export class SubCategoriesService {
   }
 
   findAll() {
-    // Use prisma.subCategory (camelCase) and include category & products
     return this.prisma.subCategory.findMany({
       include: { category: true, products: true },
     });
@@ -27,7 +26,6 @@ export class SubCategoriesService {
     });
   }
 
-  // Accept simple input and map to Prisma create shape
   async create(data: { name: string; slug?: string; categoryId: string }) {
     const baseSlug = data.slug || this.generateSlug(data.name);
     let slug = baseSlug;
@@ -41,7 +39,6 @@ export class SubCategoriesService {
       data: {
         name: data.name,
         slug,
-        // connect category by id
         category: { connect: { id: data.categoryId } },
       },
       include: { category: true, products: true },
@@ -57,6 +54,8 @@ export class SubCategoriesService {
   }
 
   delete(id: string) {
-    return this.prisma.subCategory.delete({ where: { id } });
+    return this.prisma.subCategory.delete({
+      where: { id },
+    });
   }
 }
