@@ -17,8 +17,15 @@ async function bootstrap() {
         "http://localhost:3000",
         "http://localhost:3001",
         "http://127.0.0.1:3000",
+
+        // Your Vercel frontend (correct)
+        "https://gif-front-eight.vercel.app",
+
+        // Your Vercel old domain (optional)
         "https://gif-app.vercel.app",
-        "https://gif-back.onrender.com",   // 🔥 REQUIRED FOR RENDER
+
+        // Render backend domain (optional)
+        "https://gif-back.onrender.com"
       ],
       methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
       allowedHeaders: "Content-Type, Authorization, Accept",
@@ -26,7 +33,7 @@ async function bootstrap() {
     })
   );
 
-  const port = process.env.PORT || 10000; // 🔥 Render uses dynamic port
+  const port = process.env.PORT || 10000; // Render needs this
   await app.listen(port);
   console.log(`🚀 Server running on port ${port}`);
 }
