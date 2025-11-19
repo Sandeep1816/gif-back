@@ -55,6 +55,10 @@ __decorate([
     (0, graphql_2.Field)({ nullable: true }),
     __metadata("design:type", String)
 ], ProductGQL.prototype, "categoryId", void 0);
+__decorate([
+    (0, graphql_2.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], ProductGQL.prototype, "subCategoryId", void 0);
 exports.ProductGQL = ProductGQL = __decorate([
     (0, graphql_2.ObjectType)()
 ], ProductGQL);
@@ -89,6 +93,10 @@ __decorate([
     (0, graphql_2.Field)({ nullable: true }),
     __metadata("design:type", String)
 ], CreateProductInput.prototype, "categoryId", void 0);
+__decorate([
+    (0, graphql_2.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], CreateProductInput.prototype, "subCategoryId", void 0);
 __decorate([
     (0, graphql_2.Field)({ nullable: true }),
     __metadata("design:type", Boolean)
@@ -129,6 +137,10 @@ __decorate([
 ], UpdateProductInput.prototype, "categoryId", void 0);
 __decorate([
     (0, graphql_2.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], UpdateProductInput.prototype, "subCategoryId", void 0);
+__decorate([
+    (0, graphql_2.Field)({ nullable: true }),
     __metadata("design:type", Boolean)
 ], UpdateProductInput.prototype, "isFavourite", void 0);
 exports.UpdateProductInput = UpdateProductInput = __decorate([
@@ -143,6 +155,9 @@ let ProductsResolver = class ProductsResolver {
     }
     product(id) {
         return this.productsService.findOne(id);
+    }
+    productBySlug(slug) {
+        return this.productsService.findOneBySlug(slug);
     }
     createProduct(data) {
         var _a, _b;
@@ -169,6 +184,13 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], ProductsResolver.prototype, "product", null);
+__decorate([
+    (0, graphql_1.Query)(() => ProductGQL, { nullable: true }),
+    __param(0, (0, graphql_1.Args)('slug')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ProductsResolver.prototype, "productBySlug", null);
 __decorate([
     (0, graphql_1.Mutation)(() => ProductGQL),
     __param(0, (0, graphql_1.Args)('data')),

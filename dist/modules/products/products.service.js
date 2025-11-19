@@ -25,14 +25,20 @@ let ProductsService = class ProductsService {
     }
     findAll() {
         return this.prisma.product.findMany({
-            include: { category: true },
+            include: { category: true, subcategory: true },
             orderBy: { createdAt: 'desc' },
         });
     }
     findOne(id) {
         return this.prisma.product.findUnique({
             where: { id },
-            include: { category: true },
+            include: { category: true, subcategory: true },
+        });
+    }
+    findOneBySlug(slug) {
+        return this.prisma.product.findUnique({
+            where: { slug },
+            include: { category: true, subcategory: true },
         });
     }
     async create(data) {
@@ -44,15 +50,19 @@ let ProductsService = class ProductsService {
             slug = `${baseSlug}-${count++}`;
         }
         return this.prisma.product.create({
-            data: Object.assign({ title: data.title, description: data.description, imageUrl: data.imageUrl, price: data.price, stock: (_a = data.stock) !== null && _a !== void 0 ? _a : 0, isFavourite: (_b = data.isFavourite) !== null && _b !== void 0 ? _b : false, slug }, (data.categoryId && {
+            data: Object.assign(Object.assign({ title: data.title, description: data.description, imageUrl: data.imageUrl, price: data.price, stock: (_a = data.stock) !== null && _a !== void 0 ? _a : 0, isFavourite: (_b = data.isFavourite) !== null && _b !== void 0 ? _b : false, slug }, (data.categoryId && {
                 category: { connect: { id: data.categoryId } },
+            })), (data.subCategoryId && {
+                subcategory: { connect: { id: data.subCategoryId } },
             })),
+            include: { category: true, subcategory: true },
         });
     }
     update(id, data) {
         return this.prisma.product.update({
             where: { id },
             data,
+            include: { category: true, subcategory: true },
         });
     }
     delete(id) {

@@ -14,6 +14,7 @@ const apollo_1 = require("@nestjs/apollo");
 const prisma_module_1 = require("./prisma/prisma.module");
 const products_module_1 = require("./modules/products/products.module");
 const categories_module_1 = require("./modules/categories/categories.module");
+const subcategories_module_1 = require("./modules/subcategories/subcategories.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -31,6 +32,7 @@ exports.AppModule = AppModule = __decorate([
             prisma_module_1.PrismaModule,
             products_module_1.ProductsModule,
             categories_module_1.CategoriesModule,
+            subcategories_module_1.SubCategoriesModule,
         ],
     })
 ], AppModule);

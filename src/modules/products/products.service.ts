@@ -62,6 +62,7 @@ export class ProductsService {
           subcategory: { connect: { id: data.subCategoryId } },
         }),
       },
+      include: { category: true, subcategory: true },
     });
   }
 
