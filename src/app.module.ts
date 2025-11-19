@@ -5,6 +5,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProductsModule } from './modules/products/products.module';
 import { CategoriesModule } from './modules/categories/categories.module';
+import { SubCategoriesModule } from './modules/subcategories/subcategories.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { CategoriesModule } from './modules/categories/categories.module';
     PrismaModule,
     ProductsModule,
     CategoriesModule,
+    SubCategoriesModule,
   ],
 })
 export class AppModule {}

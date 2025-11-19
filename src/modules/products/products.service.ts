@@ -16,7 +16,7 @@ export class ProductsService {
 
   findAll() {
     return this.prisma.product.findMany({
-      include: { category: true },
+      include: { category: true, subcategory: true },
       orderBy: { createdAt: 'desc' },
     });
   }
@@ -24,7 +24,14 @@ export class ProductsService {
   findOne(id: string) {
     return this.prisma.product.findUnique({
       where: { id },
-      include: { category: true },
+      include: { category: true, subcategory: true },
+    });
+  }
+
+  findOneBySlug(slug: string) {
+    return this.prisma.product.findUnique({
+      where: { slug },
+      include: { category: true, subcategory: true },
     });
   }
 
@@ -42,12 +49,17 @@ export class ProductsService {
         title: data.title,
         description: data.description,
         imageUrl: data.imageUrl,
-        price: data.price,         // ✔ EXISTS IN SCHEMA NOW
+        price: data.price,
         stock: data.stock ?? 0,
         isFavourite: data.isFavourite ?? false,
         slug,
+
         ...(data.categoryId && {
           category: { connect: { id: data.categoryId } },
+        }),
+
+        ...(data.subCategoryId && {
+          subcategory: { connect: { id: data.subCategoryId } },
         }),
       },
     });
@@ -57,6 +69,7 @@ export class ProductsService {
     return this.prisma.product.update({
       where: { id },
       data,
+      include: { category: true, subcategory: true },
     });
   }
 

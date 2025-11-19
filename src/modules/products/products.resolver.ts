@@ -11,6 +11,7 @@ export class ProductGQL {
   @Field() id: string;
   @Field() title: string;
   @Field() slug: string;
+
   @Field({ nullable: true }) description?: string;
   @Field({ nullable: true }) imageUrl?: string;
 
@@ -25,6 +26,9 @@ export class ProductGQL {
 
   @Field({ nullable: true })
   categoryId?: string;
+
+  @Field({ nullable: true })
+  subCategoryId?: string;
 }
 
 /* ===============================
@@ -50,6 +54,9 @@ export class CreateProductInput {
 
   @Field({ nullable: true })
   categoryId?: string;
+
+  @Field({ nullable: true })
+  subCategoryId?: string;
 
   @Field({ nullable: true })
   isFavourite?: boolean;
@@ -80,6 +87,9 @@ export class UpdateProductInput {
   categoryId?: string;
 
   @Field({ nullable: true })
+  subCategoryId?: string;
+
+  @Field({ nullable: true })
   isFavourite?: boolean;
 }
 
@@ -99,6 +109,11 @@ export class ProductsResolver {
   @Query(() => ProductGQL, { nullable: true })
   product(@Args('id') id: string) {
     return this.productsService.findOne(id);
+  }
+
+  @Query(() => ProductGQL, { nullable: true })
+  productBySlug(@Args('slug') slug: string) {
+    return this.productsService.findOneBySlug(slug);
   }
 
   @Mutation(() => ProductGQL)
