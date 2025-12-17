@@ -30,22 +30,35 @@ model SubCategory {
 model Product {
   id            String      @id @default(uuid())
   title         String
-  slug          String   @unique
+  slug          String      @unique
   description   String?
-  imageUrl      String?
   price         Int
-  stock         Int       @default(0)
-  isFavourite   Boolean   @default(false)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  stock         Int         @default(0)
+  isFavourite   Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 
-  // 🔥 THESE ARE OPTIONAL FOR NOW
   categoryId    String?
   subCategoryId String?
 
   category      Category?     @relation(fields: [categoryId], references: [id])
   subcategory   SubCategory?  @relation(fields: [subCategoryId], references: [id])
+
+  images        ProductImage[] // 👈 NEW
 }
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  url       String
+  isPrimary Boolean  @default(false)
+  order     Int      @default(0)
+
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+}
+
 
 model Order {
   id         String   @id @default(uuid())

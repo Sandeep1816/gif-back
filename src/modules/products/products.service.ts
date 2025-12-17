@@ -14,24 +14,34 @@ export class ProductsService {
       .replace(/^-+|-+$/g, '');
   }
 
+  private includeAll: Prisma.ProductInclude = {
+    category: true,
+    subcategory: true,
+    images: {
+      orderBy: {
+        order: Prisma.SortOrder.asc,
+      },
+    },
+  };
+
   findAll() {
     return this.prisma.product.findMany({
-      include: { category: true, subcategory: true },
-      orderBy: { createdAt: 'desc' },
+      include: this.includeAll,
+      orderBy: { createdAt: Prisma.SortOrder.desc },
     });
   }
 
   findOne(id: string) {
     return this.prisma.product.findUnique({
       where: { id },
-      include: { category: true, subcategory: true },
+      include: this.includeAll,
     });
   }
 
   findOneBySlug(slug: string) {
     return this.prisma.product.findUnique({
       where: { slug },
-      include: { category: true, subcategory: true },
+      include: this.includeAll,
     });
   }
 
@@ -48,7 +58,6 @@ export class ProductsService {
       data: {
         title: data.title,
         description: data.description,
-        imageUrl: data.imageUrl,
         price: data.price,
         stock: data.stock ?? 0,
         isFavourite: data.isFavourite ?? false,
@@ -61,16 +70,40 @@ export class ProductsService {
         ...(data.subCategoryId && {
           subcategory: { connect: { id: data.subCategoryId } },
         }),
+
+        ...(data.images && {
+          images: {
+            create: data.images.map((img, index) => ({
+              url: img.url,
+              isPrimary: img.isPrimary ?? index === 0,
+              order: img.order ?? index,
+            })),
+          },
+        }),
       },
-      include: { category: true, subcategory: true },
+      include: this.includeAll,
     });
   }
 
-  update(id: string, data: Prisma.ProductUpdateInput) {
+  async update(id: string, data: any) {
+    const { images, ...rest } = data;
+
     return this.prisma.product.update({
       where: { id },
-      data,
-      include: { category: true, subcategory: true },
+      data: {
+        ...rest,
+        ...(images && {
+          images: {
+            deleteMany: {},
+            create: images.map((img, index) => ({
+              url: img.url,
+              isPrimary: img.isPrimary ?? index === 0,
+              order: img.order ?? index,
+            })),
+          },
+        }),
+      },
+      include: this.includeAll,
     });
   }
 

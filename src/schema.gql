@@ -2,17 +2,24 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type ProductImageGQL {
+  id: String!
+  url: String!
+  isPrimary: Boolean!
+  order: Int!
+}
+
 type ProductGQL {
   id: String!
   title: String!
   slug: String!
   description: String
-  imageUrl: String
   price: Int!
   stock: Int!
   isFavourite: Boolean!
   categoryId: String
   subCategoryId: String
+  images: [ProductImageGQL!]!
 }
 
 type CategoryGQL {
@@ -57,10 +64,16 @@ input CreateProductInput {
   price: Int!
   stock: Int
   description: String
-  imageUrl: String
+  images: [ProductImageInput!]
   categoryId: String
   subCategoryId: String
   isFavourite: Boolean
+}
+
+input ProductImageInput {
+  url: String!
+  isPrimary: Boolean
+  order: Int
 }
 
 input UpdateProductInput {
@@ -69,7 +82,7 @@ input UpdateProductInput {
   price: Int
   stock: Int
   description: String
-  imageUrl: String
+  images: [ProductImageInput!]
   categoryId: String
   subCategoryId: String
   isFavourite: Boolean

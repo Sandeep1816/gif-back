@@ -3,7 +3,19 @@ import { ObjectType, Field, Int, InputType } from '@nestjs/graphql';
 import { ProductsService } from './products.service';
 
 /* ===============================
-        GQL OBJECT TYPE
+        IMAGE TYPES
+================================ */
+
+@ObjectType()
+export class ProductImageGQL {
+  @Field() id: string;
+  @Field() url: string;
+  @Field() isPrimary: boolean;
+  @Field(() => Int) order: number;
+}
+
+/* ===============================
+        PRODUCT TYPE
 ================================ */
 
 @ObjectType()
@@ -12,8 +24,8 @@ export class ProductGQL {
   @Field() title: string;
   @Field() slug: string;
 
-  @Field({ nullable: true }) description?: string;
-  @Field({ nullable: true }) imageUrl?: string;
+  @Field({ nullable: true })
+  description?: string;
 
   @Field(() => Int)
   price: number;
@@ -29,11 +41,21 @@ export class ProductGQL {
 
   @Field({ nullable: true })
   subCategoryId?: string;
+
+  @Field(() => [ProductImageGQL])
+  images: ProductImageGQL[];
 }
 
 /* ===============================
-        CREATE INPUT
+        INPUT TYPES
 ================================ */
+
+@InputType()
+export class ProductImageInput {
+  @Field() url: string;
+  @Field({ nullable: true }) isPrimary?: boolean;
+  @Field(() => Int, { nullable: true }) order?: number;
+}
 
 @InputType()
 export class CreateProductInput {
@@ -49,8 +71,8 @@ export class CreateProductInput {
   @Field({ nullable: true })
   description?: string;
 
-  @Field({ nullable: true })
-  imageUrl?: string;
+  @Field(() => [ProductImageInput], { nullable: true })
+  images?: ProductImageInput[];
 
   @Field({ nullable: true })
   categoryId?: string;
@@ -61,10 +83,6 @@ export class CreateProductInput {
   @Field({ nullable: true })
   isFavourite?: boolean;
 }
-
-/* ===============================
-        UPDATE INPUT
-================================ */
 
 @InputType()
 export class UpdateProductInput {
@@ -80,8 +98,8 @@ export class UpdateProductInput {
   @Field({ nullable: true })
   description?: string;
 
-  @Field({ nullable: true })
-  imageUrl?: string;
+  @Field(() => [ProductImageInput], { nullable: true })
+  images?: ProductImageInput[];
 
   @Field({ nullable: true })
   categoryId?: string;
@@ -101,6 +119,8 @@ export class UpdateProductInput {
 export class ProductsResolver {
   constructor(private readonly productsService: ProductsService) {}
 
+  /* -------- Queries -------- */
+
   @Query(() => [ProductGQL])
   products() {
     return this.productsService.findAll();
@@ -116,6 +136,8 @@ export class ProductsResolver {
     return this.productsService.findOneBySlug(slug);
   }
 
+  /* -------- Mutations -------- */
+
   @Mutation(() => ProductGQL)
   createProduct(@Args('data') data: CreateProductInput) {
     return this.productsService.create({
@@ -126,7 +148,10 @@ export class ProductsResolver {
   }
 
   @Mutation(() => ProductGQL)
-  updateProduct(@Args('id') id: string, @Args('data') data: UpdateProductInput) {
+  updateProduct(
+    @Args('id') id: string,
+    @Args('data') data: UpdateProductInput,
+  ) {
     return this.productsService.update(id, data);
   }
 
