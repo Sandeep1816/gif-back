@@ -16,6 +16,7 @@ exports.SubCategoriesResolver = exports.UpdateSubCategoryInput = exports.CreateS
 const graphql_1 = require("@nestjs/graphql");
 const graphql_2 = require("@nestjs/graphql");
 const subcategories_service_1 = require("./subcategories.service");
+const categories_resolver_1 = require("../categories/categories.resolver");
 let SubCategoryGQL = class SubCategoryGQL {
 };
 exports.SubCategoryGQL = SubCategoryGQL;
@@ -35,6 +36,10 @@ __decorate([
     (0, graphql_2.Field)(),
     __metadata("design:type", String)
 ], SubCategoryGQL.prototype, "categoryId", void 0);
+__decorate([
+    (0, graphql_2.Field)(() => categories_resolver_1.CategoryGQL, { nullable: true }),
+    __metadata("design:type", categories_resolver_1.CategoryGQL)
+], SubCategoryGQL.prototype, "category", void 0);
 exports.SubCategoryGQL = SubCategoryGQL = __decorate([
     (0, graphql_2.ObjectType)()
 ], SubCategoryGQL);
@@ -67,6 +72,10 @@ __decorate([
     (0, graphql_2.Field)({ nullable: true }),
     __metadata("design:type", String)
 ], UpdateSubCategoryInput.prototype, "slug", void 0);
+__decorate([
+    (0, graphql_2.Field)({ nullable: true }),
+    __metadata("design:type", String)
+], UpdateSubCategoryInput.prototype, "categoryId", void 0);
 exports.UpdateSubCategoryInput = UpdateSubCategoryInput = __decorate([
     (0, graphql_2.InputType)()
 ], UpdateSubCategoryInput);

@@ -9,56 +9,57 @@ datasource db {
 }
 
 model Category {
-  id            String         @id @default(uuid())
+  id            String        @id @default(uuid())
   name          String
-  slug          String   @unique
-  createdAt     DateTime @default(now())
+  slug          String        @unique
+  createdAt     DateTime      @default(now())
   subcategories SubCategory[]
   products      Product[]
 }
 
 model SubCategory {
-  id          String      @id @default(uuid())
-  name        String
-  slug        String   @unique
-  createdAt   DateTime  @default(now())
-  categoryId  String
-  category    Category   @relation(fields: [categoryId], references: [id])
-  products    Product[]
+  id         String    @id @default(uuid())
+  name       String
+  slug       String    @unique
+  createdAt  DateTime  @default(now())
+  categoryId String
+  category   Category  @relation(fields: [categoryId], references: [id])
+  products   Product[]
 }
 
 model Product {
-  id            String      @id @default(uuid())
-  title         String
-  slug          String      @unique
-  description   String?
-  price         Int
-  stock         Int         @default(0)
-  isFavourite   Boolean     @default(false)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  id          String  @id @default(uuid())
+  title       String
+  slug        String  @unique
+  description String?
+
+  price       Int // temporary optional
+  stock       Int     @default(0)
+  isFavourite Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   categoryId    String?
   subCategoryId String?
 
-  category      Category?     @relation(fields: [categoryId], references: [id])
-  subcategory   SubCategory?  @relation(fields: [subCategoryId], references: [id])
+  category    Category?    @relation(fields: [categoryId], references: [id], map: "Product_category_fkey")
+  subcategory SubCategory? @relation(fields: [subCategoryId], references: [id], map: "Product_subcategory_fkey")
 
-  images        ProductImage[] // 👈 NEW
+  images ProductImage[]
 }
 
 model ProductImage {
-  id        String   @id @default(uuid())
+  id        String  @id @default(uuid())
   url       String
-  isPrimary Boolean  @default(false)
-  order     Int      @default(0)
+  isPrimary Boolean @default(false)
+  order     Int     @default(0)
 
   productId String
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 }
-
 
 model Order {
   id         String   @id @default(uuid())

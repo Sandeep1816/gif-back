@@ -12,10 +12,32 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductsResolver = exports.UpdateProductInput = exports.CreateProductInput = exports.ProductGQL = void 0;
+exports.ProductsResolver = exports.UpdateProductInput = exports.CreateProductInput = exports.ProductImageInput = exports.ProductGQL = exports.ProductImageGQL = void 0;
 const graphql_1 = require("@nestjs/graphql");
 const graphql_2 = require("@nestjs/graphql");
 const products_service_1 = require("./products.service");
+let ProductImageGQL = class ProductImageGQL {
+};
+exports.ProductImageGQL = ProductImageGQL;
+__decorate([
+    (0, graphql_2.Field)(),
+    __metadata("design:type", String)
+], ProductImageGQL.prototype, "id", void 0);
+__decorate([
+    (0, graphql_2.Field)(),
+    __metadata("design:type", String)
+], ProductImageGQL.prototype, "url", void 0);
+__decorate([
+    (0, graphql_2.Field)(),
+    __metadata("design:type", Boolean)
+], ProductImageGQL.prototype, "isPrimary", void 0);
+__decorate([
+    (0, graphql_2.Field)(() => graphql_2.Int),
+    __metadata("design:type", Number)
+], ProductImageGQL.prototype, "order", void 0);
+exports.ProductImageGQL = ProductImageGQL = __decorate([
+    (0, graphql_2.ObjectType)()
+], ProductImageGQL);
 let ProductGQL = class ProductGQL {
 };
 exports.ProductGQL = ProductGQL;
@@ -36,10 +58,6 @@ __decorate([
     __metadata("design:type", String)
 ], ProductGQL.prototype, "description", void 0);
 __decorate([
-    (0, graphql_2.Field)({ nullable: true }),
-    __metadata("design:type", String)
-], ProductGQL.prototype, "imageUrl", void 0);
-__decorate([
     (0, graphql_2.Field)(() => graphql_2.Int),
     __metadata("design:type", Number)
 ], ProductGQL.prototype, "price", void 0);
@@ -59,9 +77,31 @@ __decorate([
     (0, graphql_2.Field)({ nullable: true }),
     __metadata("design:type", String)
 ], ProductGQL.prototype, "subCategoryId", void 0);
+__decorate([
+    (0, graphql_2.Field)(() => [ProductImageGQL]),
+    __metadata("design:type", Array)
+], ProductGQL.prototype, "images", void 0);
 exports.ProductGQL = ProductGQL = __decorate([
     (0, graphql_2.ObjectType)()
 ], ProductGQL);
+let ProductImageInput = class ProductImageInput {
+};
+exports.ProductImageInput = ProductImageInput;
+__decorate([
+    (0, graphql_2.Field)(),
+    __metadata("design:type", String)
+], ProductImageInput.prototype, "url", void 0);
+__decorate([
+    (0, graphql_2.Field)({ nullable: true }),
+    __metadata("design:type", Boolean)
+], ProductImageInput.prototype, "isPrimary", void 0);
+__decorate([
+    (0, graphql_2.Field)(() => graphql_2.Int, { nullable: true }),
+    __metadata("design:type", Number)
+], ProductImageInput.prototype, "order", void 0);
+exports.ProductImageInput = ProductImageInput = __decorate([
+    (0, graphql_2.InputType)()
+], ProductImageInput);
 let CreateProductInput = class CreateProductInput {
 };
 exports.CreateProductInput = CreateProductInput;
@@ -86,9 +126,9 @@ __decorate([
     __metadata("design:type", String)
 ], CreateProductInput.prototype, "description", void 0);
 __decorate([
-    (0, graphql_2.Field)({ nullable: true }),
-    __metadata("design:type", String)
-], CreateProductInput.prototype, "imageUrl", void 0);
+    (0, graphql_2.Field)(() => [ProductImageInput], { nullable: true }),
+    __metadata("design:type", Array)
+], CreateProductInput.prototype, "images", void 0);
 __decorate([
     (0, graphql_2.Field)({ nullable: true }),
     __metadata("design:type", String)
@@ -128,9 +168,9 @@ __decorate([
     __metadata("design:type", String)
 ], UpdateProductInput.prototype, "description", void 0);
 __decorate([
-    (0, graphql_2.Field)({ nullable: true }),
-    __metadata("design:type", String)
-], UpdateProductInput.prototype, "imageUrl", void 0);
+    (0, graphql_2.Field)(() => [ProductImageInput], { nullable: true }),
+    __metadata("design:type", Array)
+], UpdateProductInput.prototype, "images", void 0);
 __decorate([
     (0, graphql_2.Field)({ nullable: true }),
     __metadata("design:type", String)

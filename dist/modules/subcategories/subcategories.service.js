@@ -57,7 +57,9 @@ let SubCategoriesService = class SubCategoriesService {
         });
     }
     delete(id) {
-        return this.prisma.subCategory.delete({ where: { id } });
+        return this.prisma.subCategory.delete({
+            where: { id },
+        });
     }
 };
 exports.SubCategoriesService = SubCategoriesService;
